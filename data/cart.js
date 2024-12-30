@@ -6,18 +6,19 @@ export const cart = [{
   quantity: 1000
 }];
 
-
 export function addToCart(productId) {
     let matchingItem;
-      cart.forEach((CartItem) => {
-        if (productId === CartItem.productId) matchingItem = item;
+      cart.forEach((cartItem) => {
+        if (productId === cartItem.productId) 
+          matchingItem = cartItem;
       });
   
       const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
+      console.log(quantitySelector);
       let quantity = Number(quantitySelector.value);
   
       if (matchingItem) {
-        matchingItem.quantity +=quantity;
+        matchingItem.quantity += quantity;
       } else {
         cart.push({
           productId: productId,
