@@ -3,7 +3,8 @@ export let cart = JSON.parse(localStorage.getItem('cart'));
 if(!cart) {
   cart = [{
     id:'15b6fc6f-327a-4ec4-896f-486349e85a3d',
-    quantity:1
+    quantity:1,
+    deliveryOptionId : '2'
   }];
 }
 
@@ -19,9 +20,8 @@ export function addToCart(productId) {
           matchingItem = cartItem;
         }
       });
-  
+ 
       const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
-      console.log(quantitySelector);
       let quantity = Number(quantitySelector.value);
   
       if (matchingItem) {
@@ -30,25 +30,32 @@ export function addToCart(productId) {
         cart.push({
           id: productId,
           quantity: quantity,
+          deliveryOptionId : '1'
         });
       }
       console.log("cart loading from cart.js " , cart);
       saveToStorage();
  };
   
-
 export function deleteFromCart(productId) {
   const newCart = [];
   cart.forEach((cartItem) => {
-    if (cartItem.id === productId) 
+    if (cartItem.id !== productId) {
       newCart.push(cartItem);
+    }
   });
   cart = newCart;
-  
+
   saveToStorage();
 };
-console.log("cart loading from cart.js " , cart);
 
+export function calculateCartQuantity() {
+  let cartQuantity = 0;
+  cart.forEach((cartItem) => {
+    cartQuantity += cartItem.quantity;
+  });
+  return cartQuantity;
+};
 /*
 Can do this also
 cart.splice(productId,1);
