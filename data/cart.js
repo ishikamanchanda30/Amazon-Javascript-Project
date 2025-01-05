@@ -60,3 +60,16 @@ export function calculateCartQuantity() {
 Can do this also
 cart.splice(productId,1);
 */
+
+export function updateDeliveryOption(productId,deliveryOptionId) {
+  let matchingItem;
+  cart.forEach((cartItem) => {
+    if (productId === cartItem.id) {
+
+      matchingItem = cartItem;
+    }
+  });
+
+  matchingItem.deliveryOptionId = deliveryOptionId;
+  saveToStorage();
+}
