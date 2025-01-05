@@ -33,7 +33,6 @@ export function addToCart(productId) {
           deliveryOptionId : '1'
         });
       }
-      console.log("cart loading from cart.js " , cart);
       saveToStorage();
  };
   
