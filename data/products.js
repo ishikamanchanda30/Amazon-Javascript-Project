@@ -27,19 +27,41 @@ class Products {
   getPrice() {
     return `$${formatCurrency(this.priceCents)}`;
   }
+  extraInfoHTML() {
+    return ``;
+  }
+}
+// Inherit all properties of Products
+class Clothing extends Products {
+  sizeChartLink;
+  constructor(productDetails) {
+    // super calls the constructor of parent Class
+    super(productDetails);
+    this.sizeChartLink = productDetails.sizeChartLink;
+  }
+  extraInfoHTML() {
+    return `<a href ="${this.sizeChartLink}" target="_blank"> Size Chart </a>`;
+  }
 }
 
-const product1 = new Products({
-  id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
-  image: "images/products/athletic-cotton-socks-6-pairs.jpg",
-  name: "Black and Gray Athletic Cotton Socks - 6 Pairs",
-  rating: {
-    stars: 4.5,
-    count: 87,
-  },
-  priceCents: 1090,
-  keywords: ["socks", "sports", "apparel"],
-});
+class Appliance extends Products {
+  instructionsLink;
+  warrantyLink;
+  constructor(productDetails) {
+    // super calls the constructor of parent Class
+    super(productDetails);
+    this.instructionsLink = productDetails.instructionsLink;
+    this.warrantyLink = productDetails.warrantyLink;
+  }
+  extraInfoHTML() {
+    return `<a href ="${this.instructionsLink}" target="_blank"> Instructions Link </a><a href ="${this.warrantyLink}" target="_blank"> Warranty Link </a>`;
+  }
+}
+
+const date = new Date();
+console.log(date);
+console.log(date.toLocaleDateString());
+console.log(date.toLocaleTimeString());
 
 export const products = [
   {
@@ -85,6 +107,7 @@ export const products = [
       stars: 5,
       count: 2197,
     },
+    type: "appliance",
     priceCents: 1899,
     keywords: ["toaster", "kitchen", "appliances"],
   },
@@ -107,6 +130,7 @@ export const products = [
       stars: 4.5,
       count: 175,
     },
+    type: "appliance",
     priceCents: 3499,
     keywords: ["kitchen", "cookware"],
   },
@@ -118,6 +142,7 @@ export const products = [
       stars: 4.5,
       count: 317,
     },
+    type: "clothing",
     priceCents: 2400,
     keywords: ["hoodies", "sweaters", "apparel"],
   },
@@ -151,6 +176,7 @@ export const products = [
       stars: 4,
       count: 89,
     },
+    type: "clothing",
     priceCents: 3390,
     keywords: ["shoes", "running shoes", "footwear"],
   },
@@ -208,6 +234,7 @@ export const products = [
       stars: 4,
       count: 160,
     },
+
     priceCents: 1699,
     keywords: ["shorts", "apparel", "mens"],
   },
@@ -219,6 +246,7 @@ export const products = [
       stars: 5,
       count: 846,
     },
+    type: 'appliance',
     priceCents: 3074,
     keywords: ["water boiler", "appliances", "kitchen"],
   },
@@ -432,6 +460,7 @@ export const products = [
       stars: 4.5,
       count: 1211,
     },
+    type: 'appliance',
     priceCents: 2250,
     keywords: ["coffeemakers", "kitchen", "appliances"],
   },
@@ -509,9 +538,15 @@ export const products = [
       stars: 4.5,
       count: 3157,
     },
+    type: "clothing",
     priceCents: 2400,
     keywords: ["sweaters", "hoodies", "apparel", "mens"],
   },
 ].map((productDetails) => {
+  if (productDetails.type === "clothing") {
+    return new Clothing(productDetails);
+  } else if (productDetails.type === "appliance") {
+    return new Appliance(productDetails);
+  }
   return new Products(productDetails);
 });
