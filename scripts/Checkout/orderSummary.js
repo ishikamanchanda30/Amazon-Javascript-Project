@@ -5,17 +5,16 @@ import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import { deliveryOptions, getDeliveryOption } from '../../data/deliveryOptions.js';;
 import { renderPaymentSummary } from "./paymentSummary.js";
 
-
 export function renderOrderSummary() {
-
   let cartSummaryHTML = "";
 
   cart.forEach((cartItem) => {
     const productId = cartItem.id;
-    console.log(productId);
+    
     const matchingProduct = getProduct(productId);
 
     const deliveryOptionId = cartItem.deliveryOptionId;
+
     const deliveryOption = getDeliveryOption(deliveryOptionId);
 
     const today = dayjs();
@@ -64,6 +63,8 @@ export function renderOrderSummary() {
             `;
   });
 
+updateCartQuantity();
+
   function deliveryDateHTML(matchingProduct, cartItem){
     let html ='';
     deliveryOptions.forEach( (deliveryOption) => {
@@ -88,8 +89,6 @@ export function renderOrderSummary() {
     });
     return html;
   }
-
-  updateCartQuantity();
 
   document.querySelector(".js-order-summary").innerHTML = cartSummaryHTML;
     
@@ -130,5 +129,3 @@ export function renderOrderSummary() {
     });
   });
 };
-
-renderOrderSummary();
