@@ -9,7 +9,7 @@ export function renderOrderSummary() {
   let cartSummaryHTML = "";
 
   cart.forEach((cartItem) => {
-    const productId = cartItem.id;
+    const productId = cartItem.productId;
     
     const matchingProduct = getProduct(productId);
 
@@ -97,8 +97,6 @@ updateCartQuantity();
 
       const productId = link.dataset.productId;
       deleteFromCart(productId);
-      
-      
       const container = document.querySelector(`.js-cart-item-container-${productId}`);
       container.remove();
       renderPaymentSummary();

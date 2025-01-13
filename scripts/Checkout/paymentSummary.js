@@ -5,29 +5,23 @@ import {
   getDeliveryOption,
 } from "../../data/deliveryOptions.js";
 import { formatCurrency } from "../utils/money.js";
+import { addOrder } from "../../data/orders.js";
 
 export function renderPaymentSummary() {
-  console.log("wtf");
-  console.log("carty", cart);
-
   let productPriceCents = 0;
   let shippingPriceCents = 0;
   let totalProductQuantity = calculateCartQuantity();
   cart.forEach((cartItem) => {
-    const product = getProduct(cartItem.id);
+    const product = getProduct(cartItem.productId);
     productPriceCents += product.priceCents * cartItem.quantity;
 
     const deliveryOption = getDeliveryOption(cartItem.deliveryOptionId);
     shippingPriceCents += deliveryOption.priceCents;
   });
-  console.log("Products: ", productPriceCents);
-  console.log("Shipping: ", shippingPriceCents);
+
   const totalBeforetaxCents = productPriceCents + shippingPriceCents;
-  console.log("Price Before Tax : ", totalBeforetaxCents);
   const taxCents = totalBeforetaxCents * 0.1;
-  console.log("Tax (10%) : ", taxCents);
   const totalCents = taxCents + totalBeforetaxCents;
-  console.log("Price After Tax (10%) : ", totalCents);
 
   const paymentSummaryHTML = `<br>
   <div class="payment-summary-title">
@@ -72,9 +66,33 @@ export function renderPaymentSummary() {
             )}</div>
           </div>
 
-          <button class="place-order-button button-primary">
+          <button class="place-order-button button-primary js-place-order">
             Place your order
           </button>
         `;
+        console.log(paymentSummaryHTML);
   document.querySelector(".js-payment-summary").innerHTML = paymentSummaryHTML;
+
+  document.querySelector(".js-place-order")
+    .addEventListener("click", async () => {
+      try {
+        const response = await fetch("https://supersimplebackend.dev/orders", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            cart: cart,
+          }),
+        });
+        console.log(response);
+
+        const order = await response.json();
+        addOrder(order);
+        console.log(order);
+      } catch (error) {
+        console.log("Unexpected Error, try Again Later");
+      }
+      window.location.href = "orders.html";
+    });
 }

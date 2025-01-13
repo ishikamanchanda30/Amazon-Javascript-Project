@@ -1,8 +1,12 @@
 import { cart, addToCart, calculateCartQuantity } from "../data/cart.js";
-import { loadProducts, products } from "../data/products.js";
+import { loadProductsFetch, products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 
-loadProducts(renderProductsGrid);
+
+loadProductsFetch().then( () => {
+  renderProductsGrid();
+} )
+
 
 function renderProductsGrid() {
 
@@ -85,3 +89,5 @@ function renderProductsGrid() {
     });
   });
 }
+
+document.querySelector(".js-search-bar")
